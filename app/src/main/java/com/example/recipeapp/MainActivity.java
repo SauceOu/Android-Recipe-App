@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.recipeapp.Adapters.RandomRecipeAdapter;
 import com.example.recipeapp.Listeners.RandomRecipeResponseListener;
+import com.example.recipeapp.Listeners.RecipeClickListener;
 import com.example.recipeapp.Models.RandomRecipeApiResponse;
 
 import java.util.ArrayList;
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             recyclerView = findViewById(R.id.recycler_random);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 1));
-            randomRecipeAdapter = new RandomRecipeAdapter(MainActivity.this, response.recipes);
+            randomRecipeAdapter = new RandomRecipeAdapter(MainActivity.this, response.recipes, recipeClickListener);
             recyclerView.setAdapter(randomRecipeAdapter);
         }
 
@@ -100,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onNothingSelected(AdapterView<?> adapterView) {
 
+        }
+    };
+
+    private final RecipeClickListener recipeClickListener = new RecipeClickListener() {
+        @Override
+        public void onRecipeClick(String id) {
+            startActivity(new Intent(MainActivity.this, RecipeDetailsActivity.class)
+                    .putExtra("id", id));
         }
     };
 }
